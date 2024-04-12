@@ -1,41 +1,41 @@
-const Admin = require('../models/adminModel');
+const Guide = require('../models/guideModel');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 //Create new User
-const createAdminUser = async (req, res) => {
+const createGuide = async (req, res) => {
     console.log("helloooo")
     try {
         console.log("hellooo1111o")
         console.log(req.body)
         //Get User Input
-        const { adminnameA, nameA, passwordA } = req.body;
+        const { guidename, passwordG, nameG, addressG, phoneG, genderG } = req.body;
         //console.log("helloooo22222")
-        console.log( adminnameA+nameA+passwordA)
+        console.log( guidename+passwordG+nameG+addressG+phoneG+genderG)
 
         // Validate admin input
-        if (!(adminnameA && passwordA && nameA)) {
-            console.log("helloooo333333333333333")
+        if (!(guidename && passwordG && nameG && addressG && phoneG && genderG)) {
+            //console.log("helloooo333333333333333")
             res.status(400).json({ message: "All input are required" });
             return
         }
-        console.log("helloooo444444444")
+        //console.log("helloooo444444444")
 
         // Check if username already exists
-        const existingAdmin = await Admin.findOne({ adminnameA });
-        console.log("helloooo55555555555555")
-        if (existingAdmin) {
-            console.log("helloooo666666666666")
+        const existingGuide = await Guide.findOne({ guidename });
+        //console.log("helloooo55555555555555")
+        if (existingGuide) {
+            //console.log("helloooo666666666666")
             return res.status(409).json({ message: 'Username already exists. Please Login' });
         }
 
-        console.log("helloooo7777777777777")
+        //console.log("helloooo7777777777777")
         // Hash the password before storing it
-        const hashedPassword = await bcrypt.hash(passwordA, 10);
+        const hashedPassword = await bcrypt.hash(passwordG, 10);
         console.log(hashedPassword)
-        const admin = await Admin.create({ adminnameA, nameA, passwordA: hashedPassword });
-        console.log("helloooo9999999999999")
-        res.status(200).json({ admin, message: 'User created successfully' });
+        const guide = await Guide.create({ guidename, passwordG: hashedPassword, nameG, addressG, phoneG, genderG });
+        //console.log("helloooo9999999999999")
+        res.status(200).json({ guide, message: 'User created successfully' });
     } catch (err) {
         res.status(400).json({ message: 'Error creating user' });
     }
@@ -44,24 +44,24 @@ const createAdminUser = async (req, res) => {
 
 
 //Get All Users
-const getAdminUsers = async (req, res) => {
-    console.log("helloadmins")
+const getGuides = async (req, res) => {
+    console.log("helloguides")
 
     try {
-        const admin = await Admin.find({}).sort({ createdAt: -1 });
-        res.status(200).json({ admin });
+        const guide = await Guide.find({}).sort({ createdAt: -1 });
+        res.status(200).json({ guide });
     } catch (err) {
         res.status(400).json({ message: 'Error getting all users' });
     }
 }
 
 //Get Single User
-const getAdminUser = async (req, res) => {
+const getGuide = async (req, res) => {
 
     try {
         const { id } = req.params; //destructuring
-        const admin = await Admin.findById(id);
-        res.status(200).json({ admin });
+        const guide = await Guide.findById(id);
+        res.status(200).json({ guide });
     } catch (err) {
         res.status(404).json({ message: 'Error, No such user' });
     }
@@ -69,12 +69,12 @@ const getAdminUser = async (req, res) => {
 }
 
 //Delete User
-const deleteAdminUser = async (req, res) => {
+const deleteGuide = async (req, res) => {
 
     try {
         const { id } = req.params;
-        const admin = await Admin.findOneAndDelete({ _id: id });
-        res.status(200).json({ admin });
+        const guide = await Guide.findOneAndDelete({ _id: id });
+        res.status(200).json({ guide });
     } catch (err) {
         res.status(400).json({ message: 'Error, No such user, Delete user Unsuccessful' });
     }
@@ -82,12 +82,12 @@ const deleteAdminUser = async (req, res) => {
 }
 
 //Update User
-const updateAdminUser = async (req, res) => {
+const updateGuide = async (req, res) => {
 
     try {
         const { id } = req.params;
-        const admin = await Admin.findOneAndUpdate({ _id: id }, { ...req.body });
-        res.status(200).json({ admin });
+        const guide = await Guide.findOneAndUpdate({ _id: id }, { ...req.body });
+        res.status(200).json({ guide });
     } catch (err) {
         res.status(400).json({ message: 'Error, No such user, Update user Unsuccessful' });
     }
@@ -95,25 +95,25 @@ const updateAdminUser = async (req, res) => {
 }
 
 //Login User
-const loginAdminUser = async (req, res) => {
+const loginGuide = async (req, res) => {
 
     try {
         //Get User Input
-        const { adminnameA, passwordA } = req.body;
+        const { guidename, passwordG } = req.body;
 
         // Validate user input
-        if (!(adminnameA && passwordA)) {
+        if (!(guidename && passwordG)) {
             res.status(400).json({ message: "All input are required" });
             return
         }
 
         // Check if username already exists
-        const admin = await Admin.findOne({ adminnameA });
-        if (!admin) {
+        const guide = await Guide.findOne({ drivername });
+        if (!guide) {
             return res.status(409).json({ message: 'Username does not exists. Please create an Account' });
         }
 
-        if (admin && (await bcrypt.compare(passwordA, admin.passwordA))) {
+        if (guide && (await bcrypt.compare(passwordG, guide.passwordG))) {
             // // Create token
             // const accessToken = jwt.sign(
             //     { user_id: user._id, username },
@@ -138,7 +138,7 @@ const loginAdminUser = async (req, res) => {
 
 
             // user
-            return res.status(200).json({admin, message: 'Admin Login successfully' });
+            return res.status(200).json({guide, message: 'Admin Login successfully' });
         }
         return res.status(400).json("Invalid Credentials");
 
@@ -149,10 +149,10 @@ const loginAdminUser = async (req, res) => {
 };
 
 module.exports = {
-    createAdminUser,
-    getAdminUsers,
-    getAdminUser,
-    deleteAdminUser,
-    updateAdminUser,
-    loginAdminUser,
+    createGuide,
+    getGuides,
+    getGuide,
+    deleteGuide,
+    updateGuide,
+    loginGuide,
 }
