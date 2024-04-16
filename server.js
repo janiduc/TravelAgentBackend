@@ -26,6 +26,8 @@ const usersRoute = require('./routes/userRoutes');
 const adminRoute = require('./routes/adminRoutes');
 const driverRoute = require('./routes/driverRoutes');
 const guideRoute = require('./routes/guideRoutes');
+const vehicleRoute = require('./routes/vehicleRoutes');
+const bookingRoute = require('./routes/bookingRoutes');
 ConnectDB()
 
 app.get('/', (req, res) => {
@@ -45,3 +47,5 @@ app.use('/users', usersRoute);
 app.use('/admins', adminRoute);
 app.use('/drivers', driverRoute);
 app.use('/guides', guideRoute);
+app.use('/vehicles', vehicleRoute);
+app.use('/bookings', bookingRoute);

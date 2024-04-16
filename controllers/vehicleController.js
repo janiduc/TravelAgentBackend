@@ -10,31 +10,31 @@ const createVehicle = async (req, res) => {
         console.log(req.body)
         //Get User Input
         const { vehicleID, passwordV, vehicleType, nameV } = req.body;
-        //console.log("helloooo22222")
+        console.log("helloooo22222")
         console.log( vehicleID+passwordV+vehicleType+nameV)
 
         // Validate admin input
         if (!(vehicleID && passwordV && vehicleType && nameV)) {
-            //console.log("helloooo333333333333333")
+            console.log("helloooo333333333333333")
             res.status(400).json({ message: "All input are required" });
             return
         }
-        //console.log("helloooo444444444")
+        console.log("helloooo444444444")
 
         // Check if username already exists
         const existingVehicle = await Vehicle.findOne({ vehicleID });
-        //console.log("helloooo55555555555555")
+        console.log("helloooo55555555555555")
         if (existingVehicle) {
             //console.log("helloooo666666666666")
             return res.status(409).json({ message: 'Username already exists. Please Login' });
         }
 
-        //console.log("helloooo7777777777777")
+        console.log("helloooo7777777777777")
         // Hash the password before storing it
         const hashedPassword = await bcrypt.hash(passwordV, 10);
         console.log(hashedPassword)
-        const vehicle = await Vehicle.create({ vehicleID, passwordV: hashedPassword, nameV });
-        //console.log("helloooo9999999999999")
+        const vehicle = await Vehicle.create({ vehicleID, passwordV: hashedPassword, vehicleType, nameV });
+        console.log("helloooo9999999999999")
         res.status(200).json({ vehicle, message: 'User created successfully' });
     } catch (err) {
         res.status(400).json({ message: 'Error creating user' });
@@ -48,8 +48,8 @@ const getVehicles = async (req, res) => {
     console.log("hellodrivers")
 
     try {
-        const driver = await Driver.find({}).sort({ createdAt: -1 });
-        res.status(200).json({ driver });
+        const vehicle = await Vehicle.find({}).sort({ createdAt: -1 });
+        res.status(200).json({ vehicle });
     } catch (err) {
         res.status(400).json({ message: 'Error getting all users' });
     }

@@ -1,10 +1,10 @@
-/*const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
     userNameBooking: {
         type: String,
         required: [true, 'Please enter Your Name'],
-        unique: true,
+        //unique: true,
     },
     startingDes: {
         type: String,
@@ -45,11 +45,10 @@ const bookingSchema = new mongoose.Schema({
     guideDetail: {
         type: String,
         required: [true, 'Please enter guide details'],
-    }
+    },
     // token: { 
     //     type: String 
     // },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Booking', bookingSchema);
-*/

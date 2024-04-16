@@ -108,7 +108,7 @@ const loginGuide = async (req, res) => {
         }
 
         // Check if username already exists
-        const guide = await Guide.findOne({ drivername });
+        const guide = await Guide.findOne({ guidename });
         if (!guide) {
             return res.status(409).json({ message: 'Username does not exists. Please create an Account' });
         }
