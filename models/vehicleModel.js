@@ -12,10 +12,6 @@ const vehicleSchema = new mongoose.Schema({
     },
     vehicleType: {
         type: String,
-        required: [true, 'Please enter a password'],
-    },
-    vehicleType: {
-        type: String,
         required: [true, 'Please enter a vehicleType'],
     },
     nameV: {
