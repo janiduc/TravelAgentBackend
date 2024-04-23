@@ -10,9 +10,6 @@ router.get('/getUsers', getBookings);
 //Post a new
 router.post('/create', createBooking);
 
-//login a new
-//router.post('/login', loginDriver);
-
 //Get a single
 router.get('/:id', getBooking);
 

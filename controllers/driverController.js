@@ -4,37 +4,28 @@ const bcrypt = require('bcrypt');
 
 //Create new User
 const createDriver = async (req, res) => {
-    console.log("helloooo")
     try {
-        console.log("hellooo1111o")
         console.log(req.body)
         //Get User Input
         const { drivername, passwordD, nameD, addressD, phoneD, genderD } = req.body;
-        console.log("helloooo22222")
         console.log( drivername+passwordD+nameD+addressD+phoneD+genderD)
 
         // Validate admin input
         if (!(drivername && passwordD && nameD && addressD && phoneD && genderD)) {
-            console.log("helloooo333333333333333")
             res.status(400).json({ message: "All input are required" });
             return
         }
-        console.log("helloooo444444444")
 
         // Check if username already exists
         const existingDriver = await Driver.findOne({ drivername });
-        console.log("helloooo55555555555555")
         if (existingDriver) {
-            console.log("helloooo666666666666")
             return res.status(409).json({ message: 'Username already exists. Please Login' });
         }
 
-        console.log("helloooo7777777777777")
         // Hash the password before storing it
         const hashedPassword = await bcrypt.hash(passwordD, 10);
         console.log(hashedPassword)
         const driver = await Driver.create({ drivername, passwordD: hashedPassword, nameD, addressD, phoneD, genderD });
-        console.log("helloooo9999999999999")
         res.status(200).json({ driver, message: 'User created successfully' });
     } catch (err) {
         res.status(400).json({ message: 'Error creating user' });
@@ -114,29 +105,6 @@ const loginDriver = async (req, res) => {
         }
 
         if (driver && (await bcrypt.compare(passwordD, driver.passwordD))) {
-            // // Create token
-            // const accessToken = jwt.sign(
-            //     { user_id: user._id, username },
-            //     process.env.TOKEN_KEY,
-            //     {
-            //         expiresIn: "1h",
-            //     }
-            // );
-
-            // const refreshToken = jwt.sign(
-            //     { user_id: user._id, username },
-            //     process.env.TOKEN_KEY,
-            //     {
-            //         expiresIn: "1d",
-            //     }
-            // );
-
-            // res
-            // .cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'None',secure:true })
-            // .setHeader('Access-Control-Expose-Headers', 'Authorization')
-            // .header('Authorization', accessToken)
-
-
             // user
             return res.status(200).json({driver, message: 'Admin Login successfully' });
         }
