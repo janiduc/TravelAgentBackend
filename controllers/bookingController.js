@@ -4,26 +4,21 @@ const bcrypt = require('bcrypt');
 
 //Create new User
 const createBooking = async (req, res) => {
-    console.log("helloooo")
+    
     try {
-        console.log("hellooo1111o")
         console.log(req.body)
         //Get User Input
         const { userNameBooking, startingDes, endingDes, startDate, endDate, distance, totalCost, vehicleType, vehicleDetail, driverDetail, guideDetail } = req.body;
-        //console.log("helloooo22222")
         console.log( userNameBooking+startingDes+endingDes+startDate+endDate+distance+totalCost+vehicleType+vehicleDetail+driverDetail+guideDetail)
 
         // Validate admin input
         if (!(userNameBooking && startingDes && endingDes && startDate && endDate && distance && totalCost && vehicleType && vehicleDetail && driverDetail && guideDetail)) {
-            //console.log("helloooo333333333333333")
             res.status(400).json({ message: "All input are required" });
             return
         }
-        console.log("helloooo444444444")
 
         // Check if username already exists
         const booking = await Booking.create({ userNameBooking, startingDes, endingDes, startDate, endDate, distance, totalCost, vehicleType, vehicleDetail, driverDetail, guideDetail });
-        console.log("helloooo9999999999999")
         res.status(200).json({ booking, message: 'User created successfully' });
     } catch (err) {
         res.status(400).json({ message: 'Error creating Booking' });

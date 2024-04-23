@@ -26,9 +26,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter a gender'],
     },
-    // token: { 
-    //     type: String 
-    // },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

@@ -46,9 +46,6 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter guide details'],
     },
-    // token: { 
-    //     type: String 
-    // },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Booking', bookingSchema);

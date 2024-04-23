@@ -14,9 +14,6 @@ const adminSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter a name'],
     }
-    // token: { 
-    //     type: String 
-    // },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Admin', adminSchema);

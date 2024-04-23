@@ -4,37 +4,28 @@ const bcrypt = require('bcrypt');
 
 //Create new User
 const createUser = async (req, res) => {
-    console.log("helloooo")
     try {
-        console.log("hellooo1111o")
         console.log(req.body)
         //Get User Input
         const { username, password, name, address, phone, gender } = req.body;
-        //console.log("helloooo22222")
         console.log( username+password+ name+ address+ phone+ gender)
 
         // Validate user input
         if (!(username && password && name && address && phone && gender)) {
-            //console.log("helloooo333333333333333")
             res.status(400).json({ message: "All input are required" });
             return
         }
-        //console.log("helloooo444444444")
 
         // Check if username already exists
         const existingUser = await User.findOne({ username });
-        //console.log("helloooo55555555555555")
         if (existingUser) {
-            //console.log("helloooo666666666666")
             return res.status(409).json({ message: 'Username already exists. Please Login' });
         }
 
-        //console.log("helloooo7777777777777")
         // Hash the password before storing it
         const hashedPassword = await bcrypt.hash(password, 10);
         console.log(hashedPassword)
         const user = await User.create({ username, password: hashedPassword, name, address, phone, gender });
-        //console.log("helloooo9999999999999")
         res.status(200).json({ user, message: 'User created successfully' });
     } catch (err) {
         res.status(400).json({ message: 'Error creating user' });
@@ -113,29 +104,6 @@ const loginUser = async (req, res) => {
         }
 
         if (user && (await bcrypt.compare(password, user.password))) {
-            // // Create token
-            // const accessToken = jwt.sign(
-            //     { user_id: user._id, username },
-            //     process.env.TOKEN_KEY,
-            //     {
-            //         expiresIn: "1h",
-            //     }
-            // );
-
-            // const refreshToken = jwt.sign(
-            //     { user_id: user._id, username },
-            //     process.env.TOKEN_KEY,
-            //     {
-            //         expiresIn: "1d",
-            //     }
-            // );
-
-            // res
-            // .cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'None',secure:true })
-            // .setHeader('Access-Control-Expose-Headers', 'Authorization')
-            // .header('Authorization', accessToken)
-
-
             // user
             return res.status(200).json({user, message: 'User Login successfully' });
         }
